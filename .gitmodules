@@ -1,0 +1,21 @@
+[submodule "port/LM6063DCW_A"]
+	path = driver/LM6063DCW_A
+	url = https://github.com/bassem-mostafa/LCD_LM6063DCW_A.git
+[submodule "port/LMB162AFC"]
+	path = driver/LMB162AFC
+	url = https://github.com/bassem-mostafa/LCD_LMB162AFC.git
+[submodule "port/Stub"]
+	path = port/Stub
+	url = https://github.com/bassem-mostafa/LCD_Stub.git
+[submodule "port/Windows"]
+	path = port/Windows
+	url = https://github.com/bassem-mostafa/LCD_Windows.git
+[submodule "driver/LM6063DCW_A"]
+	path = driver/LM6063DCW_A
+	url = https://github.com/bassem-mostafa/LCD_LM6063DCW_A.git
+[submodule "driver/LMB162AFC"]
+	path = driver/LMB162AFC
+	url = https://github.com/bassem-mostafa/LCD_LMB162AFC.git
+[submodule "port/Flow_Meter"]
+	path = port/Flow_Meter
+	url = https://github.com/bassem-mostafa/LCD_Flow_Meter.git
