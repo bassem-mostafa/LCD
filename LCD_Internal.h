@@ -68,13 +68,13 @@ extern "C"
     #define LCD_LOG_PREFIX UTIL_StringConcatenateConstant( LCD_NAME, "> " )
 
     #ifdef DEBUG
-        #define LCD_Raw( Level, Format, ... ) LCD_LOG_Raw( Level, Format, ##__VA_ARGS__ )
-        #define LCD_Trace( Format, ... )      LCD_LOG_Trace( UTIL_StringConcatenateConstant( LCD_LOG_PREFIX, Format ), ##__VA_ARGS__ )
-        #define LCD_Debug( Format, ... )      LCD_LOG_Debug( UTIL_StringConcatenateConstant( LCD_LOG_PREFIX, Format ), ##__VA_ARGS__ )
-        #define LCD_Info( Format, ... )       LCD_LOG_Info( UTIL_StringConcatenateConstant( LCD_LOG_PREFIX, Format ), ##__VA_ARGS__ )
-        #define LCD_Warning( Format, ... )    LCD_LOG_Warning( UTIL_StringConcatenateConstant( LCD_LOG_PREFIX, Format ), ##__VA_ARGS__ )
-        #define LCD_Error( Format, ... )      LCD_LOG_Error( UTIL_StringConcatenateConstant( LCD_LOG_PREFIX, Format ), ##__VA_ARGS__ )
-        #define LCD_Fatal( Format, ... )      LCD_LOG_Fatal( UTIL_StringConcatenateConstant( LCD_LOG_PREFIX, Format ), ##__VA_ARGS__ )
+        #define LCD_Raw( Level, Format, ... ) LOG_Raw( LCD_LOG, Level, Format, ##__VA_ARGS__ )
+        #define LCD_Trace( Format, ... )      LOG_Trace( LCD_LOG, UTIL_StringConcatenateConstant( LCD_LOG_PREFIX, Format ), ##__VA_ARGS__ )
+        #define LCD_Debug( Format, ... )      LOG_Debug( LCD_LOG, UTIL_StringConcatenateConstant( LCD_LOG_PREFIX, Format ), ##__VA_ARGS__ )
+        #define LCD_Info( Format, ... )       LOG_Info( LCD_LOG, UTIL_StringConcatenateConstant( LCD_LOG_PREFIX, Format ), ##__VA_ARGS__ )
+        #define LCD_Warning( Format, ... )    LOG_Warning( LCD_LOG, UTIL_StringConcatenateConstant( LCD_LOG_PREFIX, Format ), ##__VA_ARGS__ )
+        #define LCD_Error( Format, ... )      LOG_Error( LCD_LOG, UTIL_StringConcatenateConstant( LCD_LOG_PREFIX, Format ), ##__VA_ARGS__ )
+        #define LCD_Fatal( Format, ... )      LOG_Fatal( LCD_LOG, UTIL_StringConcatenateConstant( LCD_LOG_PREFIX, Format ), ##__VA_ARGS__ )
     #else
         #define LCD_Raw( Level, Format, ... )
         #define LCD_Trace( Format, ... )
@@ -93,7 +93,7 @@ extern "C"
 
     typedef struct LCD_Instance
     {
-        LCD_t LCD;
+        LCD_t LCDx;
 
         union
         {
@@ -103,24 +103,9 @@ extern "C"
         };
     } LCD_Instance_t;
 
-    typedef struct LCD_Context
-    {
-        LCD_Instance_t Instance[ LCD_NUMBER_OF_INSTANCES ];
-    } LCD_Context_t;
-
     // #############################################################################
     // #### Public Method(s) #######################################################
     // #############################################################################
-
-    LOG_Status_t LCD_LOG_Raw( LOG_Level_t LOG_Level, LOG_Format_t LOG_Format, ... );
-    LOG_Status_t LCD_LOG_Trace( LOG_Format_t LOG_Format, ... );
-    LOG_Status_t LCD_LOG_Debug( LOG_Format_t LOG_Format, ... );
-    LOG_Status_t LCD_LOG_Info( LOG_Format_t LOG_Format, ... );
-    LOG_Status_t LCD_LOG_Warning( LOG_Format_t LOG_Format, ... );
-    LOG_Status_t LCD_LOG_Error( LOG_Format_t LOG_Format, ... );
-    LOG_Status_t LCD_LOG_Fatal( LOG_Format_t LOG_Format, ... );
-
-    LCD_Status_t LCD_Instance_IsValid( LCD_Instance_t * LCD_Instance );
 
     // The following APIs MUST be provided by the port
     LCD_Status_t LCD_IsValid( LCD_t LCD );
@@ -128,6 +113,8 @@ extern "C"
     LCD_Status_t LCD_Instance_Initialize( LCD_Instance_t * LCD_Instance );
     LCD_Status_t LCD_Instance_Cycle( LCD_Instance_t * LCD_Instance );
     LCD_Status_t LCD_Instance_DeInitialize( LCD_Instance_t * LCD_Instance );
+
+    LCD_Status_t LCD_Instance_IsReady( LCD_Instance_t * LCD_Instance );
 
     LCD_Status_t LCD_Instance_GetSize( LCD_Instance_t * LCD_Instance, LCD_Size_t * LCD_Size );
 
@@ -144,8 +131,6 @@ extern "C"
     // #############################################################################
     // #### Public Variable(s) #####################################################
     // #############################################################################
-
-    extern LCD_Context_t LCD_Context;
 
     // #############################################################################
     // #### File Guard #############################################################
