@@ -22,6 +22,12 @@
 // #### Description ############################################################
 // #############################################################################
 
+/**
+ *  @file
+ *
+ *  @brief Platform LCD Module
+ */
+
 // #############################################################################
 // #### Control Include(s) #####################################################
 // #############################################################################
@@ -30,9 +36,26 @@
 // #### Control Macro(s) #######################################################
 // #############################################################################
 
-#ifdef LCD // FIX STM32
-    #undef LCD
-#endif
+/**
+ *  @addtogroup Platform_Module
+ *
+ *  @{
+ */
+
+/**
+ *  @defgroup Platform_LCD LCD
+ *
+ *  @note Default port is STUB if Unspecified
+ *
+ *  @{
+ */
+
+/**
+ *  @defgroup Platform_LCD_Driver Driver
+ *
+ *  @{
+ *  @}
+ */
 
 // #############################################################################
 // #### File Guard #############################################################
@@ -50,9 +73,9 @@ extern "C"
     // #### Include(s) #############################################################
     // #############################################################################
 
-    #include "LCD_Port.h"
-
     #include <stdint.h>
+
+    #include "LCD_Port.h"
 
     // #############################################################################
     // #### Public Macro(s) ########################################################
@@ -62,68 +85,167 @@ extern "C"
     // #### Public Type(s) #########################################################
     // #############################################################################
 
+    /**
+     *  @brief LCD Operation Status
+     *
+     *  @enum LCD_Status_t
+     */
     typedef enum LCD_Status
     {
-        LCD_Status_Success = 0,
-        LCD_Status_ArgumentInvalid,
-        LCD_Status_NotSupported,
-        LCD_Status_Error,
-        LCD_Status_Busy,
-        LCD_Status_Timeout,
+        LCD_Status_Success = 0,     ///< Success
+        LCD_Status_ArgumentInvalid, ///< Argument Invalid
+        LCD_Status_NotSupported,    ///< Not Supported
+        LCD_Status_Error,           ///< General Error
+        LCD_Status_Busy,            ///< Busy
+        LCD_Status_Timeout,         ///< Timeout
     } LCD_Status_t;
 
-    typedef uint32_t LCD_Row_t;
-
-    typedef uint32_t LCD_Column_t;
-
+    /**
+     *  @brief LCD Coordinate
+     *
+     *  @struct LCD_Coordinate_t
+     */
     typedef struct LCD_Coordinate
     {
-        LCD_Row_t Row;
-        LCD_Column_t Column;
+        uint32_t Row;
+        uint32_t Column;
     } LCD_Coordinate_t;
 
-    typedef uint32_t LCD_Width_t;
-
-    typedef uint32_t LCD_Height_t;
-
+    /**
+     *  @brief LCD Size
+     *
+     *  @struct LCD_Size_t
+     */
     typedef struct LCD_Size
     {
-        LCD_Width_t Width;
-        LCD_Height_t Height;
+        uint32_t Width;
+        uint32_t Height;
     } LCD_Size_t;
 
+    /**
+     *  @brief LCD Character
+     */
     typedef uint8_t LCD_Character_t;
 
+    /**
+     *  @brief LCD Pixel
+     */
     typedef uint32_t LCD_Pixel_t;
 
+    /**
+     *  @brief LCD Screen
+     */
     typedef LCD_Pixel_t * LCD_Screen_t;
 
     // #############################################################################
     // #### Public Method(s) #######################################################
     // #############################################################################
 
-    LCD_Status_t LCD_Initialize( void );
-    LCD_Status_t LCD_Cycle( void );
-    LCD_Status_t LCD_DeInitialize( void );
+    /**
+     *  @brief Initialize LCD instance
+     *
+     *  @note MUST BE called before using any LCD API
+     *
+     *  @param[in] LCDx Instance
+     *
+     *  @return LCD_Status_t
+     */
+    LCD_Status_t LCD_Initialize( LCD_t LCDx );
 
-    LCD_Status_t LCD_IsReady( LCD_t LCD );
+    /**
+     *  @brief Cycle LCD instance
+     *
+     *  @param[in] LCDx Instance
+     *
+     *  @return LCD_Status_t
+     */
+    LCD_Status_t LCD_Cycle( LCD_t LCDx );
 
-    LCD_Status_t LCD_GetSize( LCD_t LCD, LCD_Size_t * LCD_Size );
+    /**
+     *  @brief DeInitialize LCD instance
+     *
+     *  @param[in] LCDx Instance
+     *
+     *  @return LCD_Status_t
+     */
+    LCD_Status_t LCD_DeInitialize( LCD_t LCDx );
 
-    LCD_Status_t LCD_SetCursor( LCD_t LCD, LCD_Coordinate_t LCD_Coordinate );
+    /**
+     *  @brief Check readiness of LCD instance
+     *
+     *  @param[in] LCDx Instance
+     *
+     *  @return LCD_Status_t
+     */
+    LCD_Status_t LCD_IsReady( LCD_t LCDx );
 
-    LCD_Status_t LCD_Write( LCD_t LCD, LCD_Character_t LCD_Character );
+    /**
+     *  @brief Get size of LCD instance
+     *
+     *  @param[in]  LCDx Instance
+     *  @param[out] Size Screen dimensions
+     *
+     *  @return LCD_Status_t
+     */
+    LCD_Status_t LCD_GetSize( LCD_t LCDx, LCD_Size_t * Size );
 
-    LCD_Status_t LCD_SetPixel( LCD_t LCD, LCD_Coordinate_t LCD_Coordinate, LCD_Pixel_t LCD_Pixel );
+    /**
+     *  @brief Set cursor location on LCD instance
+     *
+     *  @param[in] LCDx       Instance
+     *  @param[in] Coordinate Location
+     *
+     *  @return LCD_Status_t
+     */
+    LCD_Status_t LCD_SetCursor( LCD_t LCDx, LCD_Coordinate_t Coordinate );
 
-    LCD_Status_t LCD_GetScreen( LCD_t LCD, LCD_Screen_t * LCD_Screen );
+    /**
+     *  @brief Write character on LCD instance
+     *
+     *  @param[in] LCDx      Instance
+     *  @param[in] Character Character
+     *
+     *  @return LCD_Status_t
+     */
+    LCD_Status_t LCD_Write( LCD_t LCDx, LCD_Character_t Character );
 
-    LCD_Status_t LCD_Flush( LCD_t LCD );
+    /**
+     *  @brief Set pixel on LCD instance
+     *
+     *  @param[in] LCDx       Instance
+     *  @param[in] Coordinate Location
+     *  @param[in] Pixel      Value
+     *
+     *  @return LCD_Status_t
+     */
+    LCD_Status_t LCD_SetPixel( LCD_t LCDx, LCD_Coordinate_t Coordinate, LCD_Pixel_t Pixel );
+
+    /**
+     *  @brief Get screen of LCD instance
+     *
+     *  @param[in] LCDx   Instance
+     *  @param[in] Screen Shadow buffer content
+     *
+     *  @return LCD_Status_t
+     */
+    LCD_Status_t LCD_GetScreen( LCD_t LCDx, LCD_Screen_t * Screen );
+
+    /**
+     *  @brief Flush LCD instance
+     *
+     *  @param[in] LCDx Instance
+     *
+     *  @return LCD_Status_t
+     */
+    LCD_Status_t LCD_Flush( LCD_t LCDx );
 
     // #############################################################################
     // #### Public Variable(s) #####################################################
     // #############################################################################
 
+    /**
+     *  @brief Version
+     */
     extern const char LCD_VERSION[];
 
     // #############################################################################
@@ -135,6 +257,12 @@ extern "C"
     #endif /* __cplusplus */
 
 #endif /* LCD_H_ */
+
+/**
+ *  @}
+ *
+ *  @}
+ */
 
 // #############################################################################
 // #### END OF FILE ############################################################

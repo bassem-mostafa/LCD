@@ -57,11 +57,11 @@ extern "C"
     // #############################################################################
 
     #ifndef LCD_TIM
-        #define LCD_TIM TIM_1
+        #define LCD_TIM PLATFORM_DEFAULT_TIM
     #endif
 
     #ifndef LCD_LOG
-        #define LCD_LOG LOG_1
+        #define LCD_LOG PLATFORM_DEFAULT_LOG
     #endif
 
     #define LCD_NAME       "LCD"
@@ -108,25 +108,25 @@ extern "C"
     // #############################################################################
 
     // The following APIs MUST be provided by the port
-    LCD_Status_t LCD_IsValid( LCD_t LCD );
+    LCD_Status_t LCD_IsValid( LCD_t LCDx );
 
-    LCD_Status_t LCD_Instance_Initialize( LCD_Instance_t * LCD_Instance );
-    LCD_Status_t LCD_Instance_Cycle( LCD_Instance_t * LCD_Instance );
-    LCD_Status_t LCD_Instance_DeInitialize( LCD_Instance_t * LCD_Instance );
+    LCD_Status_t LCD_Instance_Initialize( LCD_Instance_t * Instance );
+    LCD_Status_t LCD_Instance_Cycle( LCD_Instance_t * Instance );
+    LCD_Status_t LCD_Instance_DeInitialize( LCD_Instance_t * Instance );
 
-    LCD_Status_t LCD_Instance_IsReady( LCD_Instance_t * LCD_Instance );
+    LCD_Status_t LCD_Instance_IsReady( LCD_Instance_t * Instance );
 
-    LCD_Status_t LCD_Instance_GetSize( LCD_Instance_t * LCD_Instance, LCD_Size_t * LCD_Size );
+    LCD_Status_t LCD_Instance_GetSize( LCD_Instance_t * Instance, LCD_Size_t * Size );
 
-    LCD_Status_t LCD_Instance_SetCursor( LCD_Instance_t * LCD_Instance, LCD_Coordinate_t LCD_Coordinate );
+    LCD_Status_t LCD_Instance_SetCursor( LCD_Instance_t * Instance, LCD_Coordinate_t Coordinate );
 
-    LCD_Status_t LCD_Instance_Write( LCD_Instance_t * LCD_Instance, LCD_Character_t LCD_Character );
+    LCD_Status_t LCD_Instance_Write( LCD_Instance_t * Instance, LCD_Character_t Character );
 
-    LCD_Status_t LCD_Instance_SetPixel( LCD_Instance_t * LCD_Instance, LCD_Coordinate_t LCD_Coordinate, LCD_Pixel_t LCD_Pixel );
+    LCD_Status_t LCD_Instance_SetPixel( LCD_Instance_t * Instance, LCD_Coordinate_t Coordinate, LCD_Pixel_t Pixel );
 
-    LCD_Status_t LCD_Instance_GetScreen( LCD_Instance_t * LCD_Instance, LCD_Screen_t * LCD_Screen );
+    LCD_Status_t LCD_Instance_GetScreen( LCD_Instance_t * Instance, LCD_Screen_t * Screen );
 
-    LCD_Status_t LCD_Instance_Flush( LCD_Instance_t * LCD_Instance );
+    LCD_Status_t LCD_Instance_Flush( LCD_Instance_t * Instance );
 
     // #############################################################################
     // #### Public Variable(s) #####################################################

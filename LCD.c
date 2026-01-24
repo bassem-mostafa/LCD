@@ -149,7 +149,7 @@ static LCD_Status_t LCD_Context_DeInitialize( void )
 // #### Public Method(s) #######################################################
 // #############################################################################
 
-LCD_Status_t LCD_Initialize( void )
+LCD_Status_t LCD_Initialize( LCD_t LCDx )
 {
     LCD_Status_t Status = LCD_Status_Success;
 
@@ -164,7 +164,7 @@ LCD_Status_t LCD_Initialize( void )
     return Status;
 }
 
-LCD_Status_t LCD_Cycle( void )
+LCD_Status_t LCD_Cycle( LCD_t LCDx )
 {
     LCD_Status_t Status = LCD_Status_Success;
 
@@ -179,7 +179,7 @@ LCD_Status_t LCD_Cycle( void )
     return Status;
 }
 
-LCD_Status_t LCD_DeInitialize( void )
+LCD_Status_t LCD_DeInitialize( LCD_t LCDx )
 {
     LCD_Status_t Status = LCD_Status_Success;
 
@@ -344,7 +344,7 @@ LCD_Status_t LCD_Flush( LCD_t LCDx )
 // #### Public Variable(s) #####################################################
 // #############################################################################
 
-const char LCD_VERSION[] = "0.0.0.v20260120-0211";
+const char LCD_VERSION[] = "0.0.0.v20260124-1234";
 
 // #############################################################################
 // #### File Guard #############################################################
