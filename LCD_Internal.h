@@ -89,7 +89,7 @@ extern "C"
     // #### Public Type(s) #########################################################
     // #############################################################################
 
-    typedef struct LCD_Instance_Context_t LCD_Instance_Context_t;
+    typedef struct LCD_InstanceContext_t LCD_InstanceContext_t;
 
     typedef struct LCD_Instance
     {
@@ -97,7 +97,7 @@ extern "C"
 
         union
         {
-            LCD_Instance_Context_t * Context;
+            LCD_InstanceContext_t * Context;
             LCD_LM6063DCW_A_Instance_t * LM6063DCW_A;
             LCD_LMB162AFC_Instance_t * LMB162AFC;
         };
