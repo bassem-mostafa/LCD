@@ -59,72 +59,17 @@
 // #### Private Type(s) ########################################################
 // #############################################################################
 
-typedef struct LCD_Context
-{
-    LCD_Instance_t Instance[ LCD_Count ];
-} LCD_Context_t;
-
 // #############################################################################
 // #### Private Method(s) Prototype ############################################
 // #############################################################################
-
-static LCD_Status_t LCD_Context_Initialize( void );
-static LCD_Status_t LCD_Context_Cycle( void );
-static LCD_Status_t LCD_Context_DeInitialize( void );
 
 // #############################################################################
 // #### Private Variable(s) ####################################################
 // #############################################################################
 
-static LCD_Context_t LCD_Context;
-
 // #############################################################################
 // #### Private Method(s) ######################################################
 // #############################################################################
-
-static LCD_Status_t LCD_Context_Initialize( void )
-{
-    LCD_Status_t Status = LCD_Status_Success;
-
-    do
-    {
-        LCD_Trace( "%s( void )", __FUNCTION__ );
-
-        for ( LCD_t LCD_x = LCD_Null; LCD_x < LCD_Count; ++LCD_x )
-        {
-            LCD_Context.Instance[ LCD_x ].LCDx = LCD_x;
-        }
-    }
-    while ( 0 );
-
-    return Status;
-}
-
-static LCD_Status_t LCD_Context_Cycle( void )
-{
-    LCD_Status_t Status = LCD_Status_Success;
-
-    do
-    {
-        LCD_Trace( "%s( void )", __FUNCTION__ );
-    }
-    while ( 0 );
-
-    return Status;
-}
-
-static LCD_Status_t LCD_Context_DeInitialize( void )
-{
-    LCD_Status_t Status = LCD_Status_Success;
-
-    do
-    {
-        LCD_Trace( "%s( void )", __FUNCTION__ );
-    }
-    while ( 0 );
-
-    return Status;
-}
 
 // #############################################################################
 // #### Public Method(s) #######################################################
@@ -133,33 +78,14 @@ static LCD_Status_t LCD_Context_DeInitialize( void )
 LCD_Status_t LCD_Initialize( LCD_t LCDx )
 {
     LCD_Status_t Status = LCD_Status_Success;
-    LCD_Status_t LCD_Status = LCD_Status_Success;
 
     do
     {
         LCD_Trace( "%s( LCDx=%d )", __FUNCTION__, LCDx );
 
-        if ( ( Status = LCD_IsValid( LCDx ) ) != LCD_Status_Success )
+        if ( ( Status = LCD_Port_Initialize( LCDx ) ) != LCD_Status_Success )
         {
             break;
-        }
-
-        if ( ( Status = LCD_Context_Initialize( ) ) != LCD_Status_Success )
-        {
-            break;
-        }
-
-        for ( LCD_t LCD_x = LCD_Null; LCD_x < LCD_Count; ++LCD_x )
-        {
-            if ( LCDx != LCD_All && LCDx != LCD_x )
-            {
-                continue;
-            }
-
-            if ( ( LCD_Status = LCD_Instance_Initialize( &LCD_Context.Instance[ LCD_x ] ) ) != LCD_Status_Success )
-            {
-                Status = LCD_Status;
-            }
         }
     }
     while ( 0 );
@@ -170,33 +96,14 @@ LCD_Status_t LCD_Initialize( LCD_t LCDx )
 LCD_Status_t LCD_Cycle( LCD_t LCDx )
 {
     LCD_Status_t Status = LCD_Status_Success;
-    LCD_Status_t LCD_Status = LCD_Status_Success;
 
     do
     {
         LCD_Trace( "%s( LCDx=%d )", __FUNCTION__, LCDx );
 
-        if ( ( Status = LCD_IsValid( LCDx ) ) != LCD_Status_Success )
+        if ( ( Status = LCD_Port_Cycle( LCDx ) ) != LCD_Status_Success )
         {
             break;
-        }
-
-        if ( ( Status = LCD_Context_Cycle( ) ) != LCD_Status_Success )
-        {
-            break;
-        }
-
-        for ( LCD_t LCD_x = LCD_Null; LCD_x < LCD_Count; ++LCD_x )
-        {
-            if ( LCDx != LCD_All && LCDx != LCD_x )
-            {
-                continue;
-            }
-
-            if ( ( LCD_Status = LCD_Instance_Cycle( &LCD_Context.Instance[ LCD_x ] ) ) != LCD_Status_Success )
-            {
-                Status = LCD_Status;
-            }
         }
     }
     while ( 0 );
@@ -207,31 +114,12 @@ LCD_Status_t LCD_Cycle( LCD_t LCDx )
 LCD_Status_t LCD_DeInitialize( LCD_t LCDx )
 {
     LCD_Status_t Status = LCD_Status_Success;
-    LCD_Status_t LCD_Status = LCD_Status_Success;
 
     do
     {
         LCD_Trace( "%s( LCDx=%d )", __FUNCTION__, LCDx );
 
-        if ( ( Status = LCD_IsValid( LCDx ) ) != LCD_Status_Success )
-        {
-            break;
-        }
-
-        for ( LCD_t LCD_x = LCD_Null; LCD_x < LCD_Count; ++LCD_x )
-        {
-            if ( LCDx != LCD_All && LCDx != LCD_x )
-            {
-                continue;
-            }
-
-            if ( ( LCD_Status = LCD_Instance_DeInitialize( &LCD_Context.Instance[ LCD_x ] ) ) != LCD_Status_Success )
-            {
-                Status = LCD_Status;
-            }
-        }
-
-        if ( ( Status = LCD_Context_DeInitialize( ) ) != LCD_Status_Success )
+        if ( ( Status = LCD_Port_DeInitialize( LCDx ) ) != LCD_Status_Success )
         {
             break;
         }
@@ -247,14 +135,12 @@ LCD_Status_t LCD_IsReady( LCD_t LCDx )
 
     do
     {
-        LCD_Trace( "%s( LCD=%d )", __FUNCTION__, LCDx );
+        LCD_Trace( "%s( LCDx=%d )", __FUNCTION__, LCDx );
 
-        if ( ( Status = LCD_IsValid( LCDx ) ) != LCD_Status_Success )
+        if ( ( Status = LCD_Port_IsReady( LCDx ) ) != LCD_Status_Success )
         {
             break;
         }
-
-        Status = LCD_Instance_IsReady( &LCD_Context.Instance[ LCDx ] );
     }
     while ( 0 );
 
@@ -267,7 +153,7 @@ LCD_Status_t LCD_GetSize( LCD_t LCDx, LCD_Size_t * Size )
 
     do
     {
-        LCD_Trace( "%s( LCD=%d, Size=%p )", __FUNCTION__, LCDx, Size );
+        LCD_Trace( "%s( LCDx=%d, Size=%p )", __FUNCTION__, LCDx );
 
         if ( Size == NULL )
         {
@@ -275,12 +161,10 @@ LCD_Status_t LCD_GetSize( LCD_t LCDx, LCD_Size_t * Size )
             break;
         }
 
-        if ( ( Status = LCD_IsValid( LCDx ) ) != LCD_Status_Success )
+        if ( ( Status = LCD_Port_GetSize( LCDx, Size ) ) != LCD_Status_Success )
         {
             break;
         }
-
-        Status = LCD_Instance_GetSize( &LCD_Context.Instance[ LCDx ], Size );
     }
     while ( 0 );
 
@@ -293,14 +177,12 @@ LCD_Status_t LCD_SetCursor( LCD_t LCDx, LCD_Coordinate_t Coordinate )
 
     do
     {
-        LCD_Trace( "%s( LCD=%d, Coordinate={Row=%d, Column=%d} )", __FUNCTION__, LCDx, Coordinate.Row, Coordinate.Column );
+        LCD_Trace( "%s( LCDx=%d, Coordinate={Row=%d, Column=%d} )", __FUNCTION__, LCDx, Coordinate.Row, Coordinate.Column );
 
-        if ( ( Status = LCD_IsValid( LCDx ) ) != LCD_Status_Success )
+        if ( ( Status = LCD_Port_SetCursor( LCDx, Coordinate ) ) != LCD_Status_Success )
         {
             break;
         }
-
-        Status = LCD_Instance_SetCursor( &LCD_Context.Instance[ LCDx ], Coordinate );
     }
     while ( 0 );
 
@@ -313,14 +195,12 @@ LCD_Status_t LCD_Write( LCD_t LCDx, LCD_Character_t Character )
 
     do
     {
-        LCD_Trace( "%s( LCD=%d, Character=%02X )", __FUNCTION__, LCDx, Character );
+        LCD_Trace( "%s( LCDx=%d, Character=%02X )", __FUNCTION__, LCDx, Character );
 
-        if ( ( Status = LCD_IsValid( LCDx ) ) != LCD_Status_Success )
+        if ( ( Status = LCD_Port_Write( LCDx, Character ) ) != LCD_Status_Success )
         {
             break;
         }
-
-        Status = LCD_Instance_Write( &LCD_Context.Instance[ LCDx ], Character );
     }
     while ( 0 );
 
@@ -333,14 +213,12 @@ LCD_Status_t LCD_SetPixel( LCD_t LCDx, LCD_Coordinate_t Coordinate, LCD_Pixel_t 
 
     do
     {
-        LCD_Trace( "%s( LCD=%d, Coordinate={Row=%d, Column=%d}, Pixel=%02X )", __FUNCTION__, LCDx, Coordinate.Row, Coordinate.Column, Pixel );
+        LCD_Trace( "%s( LCDx=%d, Coordinate={Row=%d, Column=%d}, Pixel=%02X )", __FUNCTION__, LCDx, Coordinate.Row, Coordinate.Column, Pixel );
 
-        if ( ( Status = LCD_IsValid( LCDx ) ) != LCD_Status_Success )
+        if ( ( Status = LCD_Port_SetPixel( LCDx, Coordinate, Pixel ) ) != LCD_Status_Success )
         {
             break;
         }
-
-        Status = LCD_Instance_SetPixel( &LCD_Context.Instance[ LCDx ], Coordinate, Pixel );
     }
     while ( 0 );
 
@@ -353,14 +231,12 @@ LCD_Status_t LCD_GetScreen( LCD_t LCDx, LCD_Screen_t * Screen )
 
     do
     {
-        LCD_Trace( "%s( LCD=%d, Screen=%p )", __FUNCTION__, LCDx, Screen );
+        LCD_Trace( "%s( LCDx=%d, Screen=%p )", __FUNCTION__, LCDx, Screen );
 
-        if ( ( Status = LCD_IsValid( LCDx ) ) != LCD_Status_Success )
+        if ( ( Status = LCD_Port_GetScreen( LCDx, Screen ) ) != LCD_Status_Success )
         {
             break;
         }
-
-        Status = LCD_Instance_GetScreen( &LCD_Context.Instance[ LCDx ], Screen );
     }
     while ( 0 );
 
@@ -373,14 +249,12 @@ LCD_Status_t LCD_Flush( LCD_t LCDx )
 
     do
     {
-        LCD_Trace( "%s( LCD=%d )", __FUNCTION__, LCDx );
+        LCD_Trace( "%s( LCDx=%d )", __FUNCTION__, LCDx );
 
-        if ( ( Status = LCD_IsValid( LCDx ) ) != LCD_Status_Success )
+        if ( ( Status = LCD_Port_Flush( LCDx ) ) != LCD_Status_Success )
         {
             break;
         }
-
-        Status = LCD_Instance_Flush( &LCD_Context.Instance[ LCDx ] );
     }
     while ( 0 );
 
@@ -391,7 +265,7 @@ LCD_Status_t LCD_Flush( LCD_t LCDx )
 // #### Public Variable(s) #####################################################
 // #############################################################################
 
-const char LCD_VERSION[] = "0.0.0.v20260913-1832";
+const char LCD_VERSION[] = "0.0.0.v20261004-1542";
 
 // #############################################################################
 // #### File Guard #############################################################
